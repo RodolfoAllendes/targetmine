@@ -1,6 +1,6 @@
 'use strict';
 
-var $jq = jQuery.noConflict();
+// var $jq = jQuery.noConflict();
 // margins from the border of the canvas that wont be used for drawing
 var margin = {top: 40, right: 40, bottom: 40, left: 40};
 // available drawing space for the canvas
@@ -33,12 +33,12 @@ class BioActivityGraph{
 
     /* init listeners for interface components */
     let self = this;
-    $jq(document).on('change', '#color-select', function(evt){
+    jQuery(document).on('change', '#color-select', function(evt){
       console.log('CHANGE: color selection');
       self._updateColorScale('#color-select');
       self.plot(self._xPlot, self._yPlot);
     });
-    $jq(document).on('change', '#shape-select', function(evt){
+    jQuery(document).on('change', '#shape-select', function(evt){
       console.log('CHANGE: shape selection');
       self._updateShapeScale('#shape-select');
       self.plot(self._xPlot, self._yPlot);
@@ -86,7 +86,7 @@ class BioActivityGraph{
   _updateColorScale(id){
     let self = this;
     /* retrieve the option based on which to define the color scale */
-    let key = $jq(id).val();
+    let key = jQuery(id).val();
 
     /* define the set of individual values that the current key takes, so that
      * we can assign an specific color to each of them */
@@ -106,7 +106,7 @@ class BioActivityGraph{
     this._updateTable('color');
 
     /* Add a listener to show/hide elements based in color */
-    $jq(document).on('click', '.color-checkbox', function(evt){
+    jQuery(document).on('click', '.color-checkbox', function(evt){
       self.plot(self._xPlot, self._yPlot);
     });
   }
@@ -114,7 +114,7 @@ class BioActivityGraph{
   _updateShapeScale(id){
     let self = this;
     /* retrieve the option based on which to define the color scale */
-    let key = $jq(id).val();
+    let key = jQuery(id).val();
 
     /* define the set of individual values that the current key takes, so that
      * we can assign an specific color to each of them */
@@ -134,7 +134,7 @@ class BioActivityGraph{
     this._updateTable('shape');
 
     /* Add a listener to show/hide elements based in color */
-    $jq(document).on('click', '.shape-checkbox', function(evt){
+    jQuery(document).on('click', '.shape-checkbox', function(evt){
       self.plot(self._xPlot, self._yPlot);
     });
   }
@@ -150,14 +150,14 @@ class BioActivityGraph{
    */
   _updateOptions(id, selected){
     /* remove previous options */
-    $jq(id+' > option').remove();
+    jQuery(id+' > option').remove();
     /* and add the options based on the columns of the current data */
-    let select = $jq(id);
+    let select = jQuery(id);
     this._data.columns.forEach(function (key){
       /* only categorical options are added to the list */
       if ( typeof(this._data[0][key]) !== 'string' ) return;
 
-      let opt = $jq('<option>');
+      let opt = jQuery('<option>');
       opt.val(key);
       opt.text(key);
       if( key === selected )
@@ -359,15 +359,15 @@ class BioActivityGraph{
     let yscale = this._yAxis.scale();
     /* Get a list of the colors that should be displayed */
     let cb = []
-    $jq.map($jq('.color-checkbox:checked'), function(obj, k){
+    jQuery.map(jQuery('.color-checkbox:checked'), function(obj, k){
       cb.push(obj.dataset.color);
     });
-    $jq.map($jq('.shape-checkbox:checked'), function(obj, k){
+    jQuery.map(jQuery('.shape-checkbox:checked'), function(obj, k){
       cb.push(obj.dataset.shape);
     })
 
-    let colorMap = $jq('#color-select').val();
-    let shapeMap = $jq('#shape-select').val();
+    let colorMap = jQuery('#color-select').val();
+    let shapeMap = jQuery('#shape-select').val();
 
     let points = this._data.reduce(function(prev, current){
       /* filter out the points that are hidden from the visualization */
